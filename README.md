@@ -1,6 +1,6 @@
 # Workspace Migration Skill
 
-![Workspace Migration Skill folder architecture preview](assets/social-preview.png)
+![Workspace Migration Skill folder architecture preview](assets/folder-architecture-preview.png)
 
 A Codex skill for auditing and safely migrating local folders into a stable `~/Workspace` structure.
 
@@ -43,7 +43,7 @@ The default workspace shape is:
 - `scripts/workspace_audit.py`: read-only audit helper
 - `agents/openai.yaml`: Codex skill metadata
 - `examples/`: sample outputs and customization notes
-- `assets/social-preview.png`: folder architecture preview image for README and GitHub social preview
+- `assets/folder-architecture-preview.png`: folder architecture preview image for README and GitHub social preview
 
 ## Install
 
