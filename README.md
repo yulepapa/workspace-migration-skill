@@ -1,5 +1,7 @@
 # Workspace Migration Skill
 
+![Workspace Migration Skill social preview](assets/social-preview.png)
+
 A Codex skill for auditing and safely migrating local folders into a stable `~/Workspace` structure.
 
 The skill is designed for people who want a practical local information architecture for projects, AI coding sessions, reusable library material, and archives without breaking path-sensitive tools.
