@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workspace Migration"
+  short_description: "Organize local folders into a stable workspace"
+  default_prompt: "Use $workspace-migration to audit my local folders and plan a safe migration into ~/Workspace."
