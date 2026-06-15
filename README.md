@@ -41,6 +41,7 @@ The default workspace shape is:
 - `scripts/workspace_audit.py`: read-only audit helper
 - `agents/openai.yaml`: Codex skill metadata
 - `examples/`: sample outputs and customization notes
+- `assets/social-preview.png`: GitHub social preview image
 
 ## Install
 
