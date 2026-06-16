@@ -294,6 +294,40 @@ def default_roots(home: Path) -> list[Path]:
     return [p for p in candidates if p.exists()]
 
 
+def mounted_volume_findings(home: Path) -> list[Finding]:
+    volumes = Path("/Volumes")
+    if not volumes.exists():
+        return []
+
+    findings: list[Finding] = []
+    try:
+        children = sorted(volumes.iterdir(), key=lambda p: p.name.lower())
+    except OSError:
+        return findings
+
+    for child in children:
+        try:
+            resolved = child.resolve()
+        except OSError:
+            resolved = child
+        if child.is_symlink() and resolved == Path("/"):
+            continue
+        if child.name.startswith("."):
+            continue
+        findings.append(
+            Finding(
+                str(child),
+                "finder-visible-mounted-volume",
+                "verify installed app, eject installer volume, then clean up source .dmg separately",
+                "low",
+                "Mounted volume may appear on the Desktop but is not a ~/Desktop file or Workspace migration candidate",
+                ["mounted-volume"],
+                ["do not move /Volumes/* into Workspace"],
+            )
+        )
+    return findings
+
+
 def render_markdown(findings: list[Finding]) -> str:
     groups: dict[str, list[Finding]] = {}
     for finding in findings:
@@ -340,6 +374,7 @@ def main() -> int:
             finding = classify(resolved, home)
             if finding:
                 findings.append(finding)
+    findings.extend(mounted_volume_findings(home))
 
     findings.sort(key=lambda f: (f.kind, f.path))
     if args.format == "json":

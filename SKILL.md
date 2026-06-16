@@ -67,6 +67,37 @@ Treat those old numeric paths as hidden compatibility bridges only. Do not creat
 - Do not precreate or preserve empty deep placeholder folders just because a taxonomy example mentions them. Keep only the five-root structure, its required structural children, and folders that contain real content, links, active workflow meaning, or app/tool-required structure.
 - Remove empty placeholders only with `rmdir` after confirming they are outside project internals, app-owned folders, Tableau Repository internals, and compatibility bridge paths.
 
+## Desktop And Finder-Visible Items Protocol
+
+Do not assume every icon visible on the macOS Desktop is a file under `~/Desktop`.
+
+When the user asks why Desktop items remain, classify the visible item into one of these surfaces before planning moves:
+
+- real Desktop file or folder under `~/Desktop`
+- hidden compatibility symlink bridge under `~/Desktop`
+- Finder-visible mounted volume under `/Volumes`, such as an opened `.dmg` installer
+- macOS metadata, such as `.DS_Store` or `.localized`
+
+For Desktop checks, inspect both the Desktop directory and mounted volumes:
+
+```bash
+find ~/Desktop -maxdepth 1 -print -exec ls -ldO {} \;
+ls -laO /Volumes
+mount
+hdiutil info
+```
+
+Mounted installer volumes are not Workspace migration candidates. Do not move `/Volumes/*` into Workspace. If a volume is an app installer, first verify the app exists in `/Applications`, then treat the volume as an eject candidate and treat the source `.dmg` file, if still present in Downloads or Inbox, as a separate loose-file cleanup candidate.
+
+Safe installer-volume handling:
+
+```bash
+ls -ldO /Applications/AppName.app
+hdiutil detach "/Volumes/AppName"
+```
+
+If the app is not installed, if the mounted volume is writable user storage, or if the volume identity is unclear, do not detach automatically. Report it as a high-risk or manual-review item.
+
 ## 1_Now Checkpoint Protocol
 
 Use `~/Workspace/1_Now/README.md` as a small return checkpoint, not as a live task tracker, diary, or project list.
@@ -261,6 +292,7 @@ If a process is active, defer the switch. If only stale process-manager/history 
 14. After every applied batch, rerun the audit and document:
    - remaining audit candidates
    - Finder-visible top-level entries in Desktop, Downloads, Documents, home, and Workspace
+   - Finder-visible mounted volumes under `/Volumes` and whether they are installer eject candidates or real storage
    - broken symlink checks for relevant old and new paths
 15. After every applied batch, decide whether `1_Now/README.md` needs a checkpoint update:
    - add or update entries for active, paused, recently changed, or verification-risk workstreams
@@ -277,6 +309,7 @@ If a process is active, defer the switch. If only stale process-manager/history 
 
 - Do not reorganize app-owned or global tool state folders. Examples include hidden home-directory tool folders and `~/Library/Application Support/...`, but the rule is ownership-based, not name-based.
 - Do not move the active working directory of the current conversation. If the current cwd is inside a migration candidate, defer that candidate and document it.
+- Do not move `/Volumes/*` into Workspace. Mounted volumes are device or disk-image surfaces, not canonical files. Eject installer volumes only after app installation is verified; leave writable or unclear volumes for manual review.
 - Do not assume Codex App creates new sessions in `~/Workspace`. New Codex sessions may continue to appear under `~/Documents/Codex`; handle them with the Codex Session Sweep Protocol.
 - Do not move `~/Documents/Codex/.omx` while the old Codex root may still be in use.
 - Do not move bundled or internally linked project formats in a generic loose-file batch. Use a domain-specific batch with link/reference verification. Tableau workbooks, packaged workbooks, extracts, databases, design bundles, document bundles, and media libraries are examples.
@@ -360,6 +393,7 @@ Suggested next batch
 Safe auto-move candidates
 Rename proposals requiring approval
 Bridge retirement candidates
+Finder-visible mounted volumes
 1_Now checkpoint updates
 ```
 
