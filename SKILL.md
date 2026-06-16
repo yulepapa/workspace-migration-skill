@@ -13,6 +13,33 @@ Do not move, rename, delete, or archive files in the first pass. First produce a
 
 Read `references/taxonomy.md` whenever the task needs folder meanings, subfolder choices, naming rules, or migration decisions.
 
+## Private/Public Sync Policy
+
+Keep installed private copies and this public distribution repository physically separate.
+
+Private operational copy:
+
+```text
+~/.codex/skills/workspace-migration/
+```
+
+Public distribution copy:
+
+```text
+~/Workspace/2_Work/Projects/tools/workspace-migration-skill-public/
+```
+
+Rules:
+
+- Treat the private installed skill as the local operating copy. It may contain user-specific absolute paths, personal migration roots, local report paths, and machine-specific workflow rules.
+- Treat this public repository as the sanitized distribution copy. It must avoid private absolute paths, local migration logs, session state, backups, personal Drive paths, credentials, and machine-specific reports.
+- Never mirror or overwrite this public repository with a private folder wholesale.
+- Never mirror or overwrite a private installed skill with this public folder wholesale.
+- Port shared behavior changes intentionally to both copies, keeping local paths in private copies and generalized `~` paths in this public copy.
+- Before committing or pushing this public copy, check the diff for private paths, private project names, local reports, credentials, session logs, backups, and generated caches.
+- Private-only incidents, examples, and exact file names belong in private reports or private skills only. Public docs should describe the general rule without exposing the local case unless it is already non-sensitive and generalized.
+- Public changes should be committed and pushed from this repository only after verification passes.
+
 ## Canonical Root
 
 The current canonical physical structure is:
